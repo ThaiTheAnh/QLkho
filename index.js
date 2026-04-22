@@ -21,7 +21,7 @@ var activitylogRouter = require('./routers/activitylog');
 const activityLogger = require('./middlewares/activityLogger');
 const cron = require('node-cron');
 
-var uri = 'mongodb://theanh:12345@ac-3u1lbtn-shard-00-02.1nvgyov.mongodb.net:27017/quanlykho?ssl=true&authSource=admin';
+var uri = process.env.MONGODB_URI;
 
 mongoose.connect(uri)
  .then(() => console.log('Đã kết nối thành công tới MongoDB.'))
@@ -79,6 +79,6 @@ app.use('/activitylog', kiemTraDangNhap, activitylogRouter);
 
 require('./utils/cronJobs');
 
-app.listen(3000, () => {
- console.log('Server is running at http://127.0.0.1:3000');
+app.listen(process.env.PORT || 3000, () => {
+  console.log('Server running...');
 });
