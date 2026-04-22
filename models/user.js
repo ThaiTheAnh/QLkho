@@ -14,4 +14,4 @@ const UserSchema = new mongoose.Schema({
 
 UserSchema.plugin(autoIncrement, { counterName: 'user_seq', targetField: 'userID', prefix: 'USR', padLength: 3 });
 
-module.exports = mongoose.models.User || mongoose.model('User', UserSchema);
+module.exports = mongoose.models.User || mongoose.model('user', UserSchema);
