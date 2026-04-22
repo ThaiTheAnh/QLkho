@@ -27,7 +27,7 @@ mongoose.connect(uri)
  .then(() => console.log('Đã kết nối thành công tới MongoDB.'))
  .catch(err => console.log(err));
 
-require('./models/Counter');
+require('./models/counter');
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
