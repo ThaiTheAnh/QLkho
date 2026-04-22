@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ActivityLog = require('../models/ActivityLog');
-const User = require('../models/User'); // 🌟 BẮT BUỘC PHẢI GỌI MODEL USER ĐỂ TÌM KIẾM
+const User = require('../models/user'); // 🌟 BẮT BUỘC PHẢI GỌI MODEL USER ĐỂ TÌM KIẾM
 
 // 🌟 MIDDLEWARE: CHỈ ADMIN MỚI ĐƯỢC XEM LOG
 const requireAdmin = (req, res, next) => {
