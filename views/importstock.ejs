@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <title><%= title %> | Kho FTEL</title>
+</head>
+
+<body>
+    <div class="container">
+        <%- include('includes/header') %>
+    </div>
+
+    <%- include('includes/navbar') %>
+
+    <% if (currentUser) { %>
+        <div class="d-flex" style="height: calc(100vh - 140px);">
+
+            <div class="sidebar d-flex flex-column p-3 h-100 overflow-auto">
+                <a href="/" class="d-flex align-items-center mb-4 text-decoration-none text-primary">
+                    <div>
+                        <img src="/images/fpt.png" alt="FPT" height="40" class="me-2">
+                        <p style="color :black"><b>FPT Telecom An Giang</b></p>
+                    </div>
+                </a>
+
+                <ul class="nav flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="#collapseDanhMuc" data-bs-toggle="collapse" aria-expanded="false" class="nav-link d-flex justify-content-between align-items-center">
+                            <div><i class="bi bi-list-ul text-secondary"></i> Hệ thống</div>
+                            <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                        </a>
+                        <ul class="collapse nav flex-column ms-3" id="collapseDanhMuc">
+                            <li class="nav-item"><a href="/provider" class="nav-link"><i class="bi bi-shop text-secondary"></i> Nhà cung cấp</a></li>
+                            <li class="nav-item"><a href="/user" class="nav-link"><i class="bi bi-person-fill text-secondary"></i> Người dùng</a></li>
+                            <li class="nav-item"><a href="/request" class="nav-link "><i class="bi bi-file-earmark-text text-secondary"></i> Yêu cầu nhập hàng</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item mt-1">
+                        <a href="#collapseKhoThietBi" data-bs-toggle="collapse" aria-expanded="true" class="nav-link d-flex justify-content-between align-items-center">
+                            <div><i class="bi bi-building text-secondary"></i> Kho thiết bị</div>
+                            <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s; transform: rotate(90deg);"></i>
+                        </a>
+                        <ul class="collapse show nav flex-column ms-3" id="collapseKhoThietBi">
+                            <li class="nav-item"><a href="/unit" class="nav-link"><i class="bi bi-tag-fill text-secondary"></i> Đơn vị tính</a></li>
+                            <li class="nav-item"><a href="/category" class="nav-link"><i class="bi bi-grid-fill text-secondary"></i> Danh mục thiết bị</a></li>
+                            <li class="nav-item"><a href="/product" class="nav-link"><i class="bi bi-box-seam text-secondary"></i> Thiết bị</a></li>
+                            <li class="nav-item"><a href="/inventory" class="nav-link"><i class="bi bi-boxes text-secondary"></i> Tồn kho</a></li>
+                            <li class="nav-item"><a href="/importstock" class="nav-link text-primary fw-bold"><i class="bi bi-box-arrow-in-right text-primary"></i> Nhập kho</a></li>
+                            <li class="nav-item"><a href="/exportstock" class="nav-link"><i class="bi bi-box-arrow-right text-secondary"></i> Xuất kho</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="main-content flex-grow-1 d-flex flex-column bg-light h-100 overflow-hidden">
+                
+                <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center flex-shrink-0">
+                    <div>
+                        <h4 class="mb-0 fw-bold text-primary"><i class="bi bi-box-arrow-in-right me-2"></i>Quản lý Nhập Kho</h4>
+                        <nav aria-label="breadcrumb" class="mt-2">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Nhập kho</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <% if (currentUser && currentUser.role === 'admin') { %>
+                            <a href="/importstock/thung-rac" class="btn btn-outline-danger shadow-sm fw-semibold">
+                                <i class="bi bi-trash3 me-1"></i> Thùng rác
+                            </a>
+                        <% } %>
+                        <a href="/importstock/them" class="btn btn-primary shadow-sm fw-semibold">
+                            <i class="bi bi-plus-lg me-1"></i> Lập phiếu nhập
+                        </a>
+                    </div>
+                </div>
+
+                <div class="p-4 flex-grow-1 overflow-auto">
+                    <div class="card border-0 shadow-sm rounded-3 mb-4">
+                        <div class="card-body">
+                            <form action="/importstock" method="GET" class="row g-3 align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label text-muted fw-semibold small">Tìm kiếm</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control" name="search" placeholder="Mã phiếu, Hóa đơn, NCC..." value="<%= filters.search || '' %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label text-muted fw-semibold small">Từ ngày</label>
+                                    <input type="date" class="form-control" name="fromDate" value="<%= filters.fromDate || '' %>">
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label text-muted fw-semibold small">Đến ngày</label>
+                                    <input type="date" class="form-control" name="toDate" value="<%= filters.toDate || '' %>">
+                                </div>
+                                <div class="col-md-2 d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary flex-grow-1"><i class="bi bi-funnel"></i> Lọc</button>
+                                    <a href="/importstock" class="btn btn-light border"><i class="bi bi-arrow-clockwise"></i></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" class="text-center py-3" style="width: 5%">STT</th>
+                                            <th scope="col" class="py-3" style="width: 15%">Mã Phiếu</th>
+                                            <th scope="col" class="py-3" style="width: 15%">Số hóa đơn</th>
+                                            <th scope="col" class="py-3" style="width: 15%">Ngày nhập</th>
+                                            <th scope="col" class="py-3" style="width: 20%">Nhà cung cấp</th>
+                                            <th scope="col" class="py-3" style="width: 15%">Người lập</th>
+                                            <th scope="col" class="text-center py-3" style="width: 15%">Hành động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="importList">
+                                        <% if (typeof imports !=='undefined' && imports.length> 0) { %>
+                                            <% imports.forEach(function(pn, index) { %>
+                                                <tr class="<%= pn.isDeleted ? 'table-secondary opacity-75' : '' %>">
+                                                    <td class="text-center fw-semibold text-muted"><%= index + 1 %></td>
+                                                    <td>
+                                                        <% if (pn.isDeleted) { %>
+                                                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2 py-1 fs-6 text-decoration-line-through">
+                                                                <i class="bi bi-x-octagon-fill me-1"></i> <%= pn.importID %>
+                                                            </span>
+                                                            <div class="mt-1"><small class="text-danger fw-bold">ĐÃ HỦY</small></div>
+                                                        <% } else { %>
+                                                            <span class="badge bg-success bg-opacity-10 text-success border border-success-subtle px-2 py-1 fs-6">
+                                                                <i class="bi bi-receipt me-1"></i> <%= pn.importID %>
+                                                            </span>
+                                                        <% } %>
+                                                    </td>
+                                                    
+                                                    <td class="fw-bold text-secondary <%= pn.isDeleted ? 'text-decoration-line-through' : '' %>">
+                                                        <%= pn.invoiceNumber ? pn.invoiceNumber : '---' %>
+                                                    </td>
+
+                                                    <td class="fw-semibold text-dark <%= pn.isDeleted ? 'text-decoration-line-through' : '' %>">
+                                                        <%= new Date(pn.dateImport).toLocaleDateString('vi-VN') %>
+                                                    </td>
+                                                    <td>
+                                                        <span class="text-secondary fw-semibold <%= pn.isDeleted ? 'text-decoration-line-through' : '' %>">
+                                                            <%= pn.provider ? (pn.provider.ProviderName || pn.provider.name || pn.provider.providerName) : 'N/A' %>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <span class="badge bg-light text-dark border">
+                                                            <i class="bi bi-person me-1"></i>
+                                                            <%= pn.user ? (pn.user.fullName || pn.user.userName) : 'N/A' %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex justify-content-center align-items-center gap-2">
+                                                            <a href="/importstock/chitiet/<%= pn._id %>" class="btn btn-outline-info btn-sm px-2 py-1 bg-white" title="Xem chi tiết"><i class="bi bi-eye"></i></a>
+
+                                                            <% if (!pn.isDeleted) { %>
+                                                                
+                                                                <% if (currentUser && currentUser.role === 'admin') { %>
+                                                                    <a href="/importstock/sua/<%= pn._id %>" class="btn btn-outline-warning btn-sm px-2 py-1 bg-white" title="Sửa phiếu"><i class="bi bi-pencil"></i></a>
+                                                                <% } %>
+                                                                
+                                                                <button type="button" class="btn btn-outline-danger btn-sm px-2 py-1 shadow-sm bg-white" onclick="huyPhieu('<%= pn._id %>')" title="Hủy phiếu">
+                                                                    <i class="bi bi-x-circle fw-bold"></i>
+                                                                </button>
+
+                                                            <% } %>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="7" class="text-center py-5 text-muted">
+                                                    <i class="bi bi-inbox fs-1 d-block mb-3 text-secondary"></i>
+                                                    Chưa có phiếu nhập kho nào khớp với tìm kiếm.
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <% } else { %>
+        <div class="container mt-5 text-center">
+            <div class="alert alert-warning" role="alert">
+                Vui lòng <a href="/auth/login" class="alert-link">đăng nhập</a> để truy cập hệ thống.
+            </div>
+        </div>
+    <% } %>
+
+    <%- include('includes/footer') %>
+    <%- include('includes/javascript') %>
+
+    <script>
+        async function huyPhieu(id) {
+            // 1. Hiển thị hộp thoại bắt buộc nhập lý do
+            const reason = prompt("CẢNH BÁO: Hủy phiếu sẽ TRỪ LẠI số lượng trong kho.\nVui lòng nhập LÝ DO HỦY (bắt buộc):");
+            
+            // Bấm Cancel thì thoát
+            if (reason === null) return; 
+
+            // Kiểm tra không nhập chữ nào
+            if (reason.trim() === "") {
+                alert("❌ Bạn bắt buộc phải nhập lý do hủy để lưu vết!");
+                return;
+            }
+
+            // 2. Gửi dữ liệu xuống Backend
+            try {
+                const response = await fetch(`/importstock/huy/${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cancelReason: reason.trim() })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert("✅ " + result.message);
+                    window.location.reload(); // Tải lại trang để cập nhật giao diện
+                } else {
+                    alert("❌ Thất bại: " + result.message);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("❌ Đã xảy ra lỗi mạng khi thực hiện hủy phiếu!");
+            }
+        }
+    </script>
+
+</body>
+</html>

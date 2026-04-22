@@ -1,0 +1,85 @@
+<footer style="background-color: #13138b; color: white; padding-top: 40px;">
+    <div class="container">
+        <div class="row mb-4">
+
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="fw-bold mb-3" style="color: #ffffff;">THÔNG TIN LIÊN HỆ</h5>
+                <p class="fw-bold fs-5 mb-2">FPT Telecom An Giang</p>
+                <p class="mb-2"><i class="bi bi-geo-alt-fill me-2 text-warning"></i>152 Trần Hưng Đạo, P. Long Xuyên, An Giang</p>
+                <p class="mb-2"><i class="bi bi-telephone-fill me-2 text-warning"></i>Hotline: <strong>0901 888 551</strong></p>
+                <p class="mb-3"><i class="bi bi-envelope-fill me-2 text-warning"></i>Email: hotro@fpt.vn</p>
+                
+                <div class="d-flex gap-3 mt-3">
+                    <a href="#" class="text-white fs-4 footer-social"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-white fs-4 footer-social"><i class="bi bi-youtube"></i></a>
+                    <a href="#" class="text-white fs-4 footer-social"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="fw-bold mb-3" style="color: #ffffff;">SẢN PHẨM – DỊCH VỤ</h5>
+                <ul class="list-unstyled lh-lg">
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Internet cá nhân</a></li>
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Combo Internet – Truyền hình</a></li>
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Internet doanh nghiệp</a></li>
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Camera FPT</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-4">
+                <h5 class="fw-bold mb-3" style="color: #ffffff;">VỀ CHÚNG TÔI</h5>
+                <ul class="list-unstyled lh-lg">
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Giới thiệu công ty</a></li>
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Chính sách bảo mật</a></li>
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Điều khoản sử dụng</a></li>
+                    <li><i class="bi bi-chevron-right me-1" style="font-size: 0.8rem;"></i> <a href="#" class="text-white text-decoration-none footer-link">Chính sách bảo hành</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <style>
+        .footer-link { transition: color 0.3s ease; }
+        .footer-link:hover { color: #f36f21 !important; padding-left: 5px; }
+        .footer-social { transition: transform 0.3s ease, color 0.3s ease; }
+        .footer-social:hover { color: #f36f21 !important; transform: translateY(-3px); }
+    </style>
+
+    <button type="button"
+        class="btn btn-warning border-0 shadow rounded-circle d-flex align-items-center justify-content-center"
+        id="btnBackToTop"
+        style="position: fixed; bottom: 30px; right: 30px; z-index: 1060; width: 45px; height: 45px; padding: 0; display: none !important; transition: all 0.3s;">
+        <i class="bi bi-chevron-up text-dark fw-bold" style="font-size: 1.2rem;"></i>
+    </button>
+
+    <script>
+        const mybutton = document.getElementById("btnBackToTop");
+
+        window.onscroll = function () {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                mybutton.style.setProperty("display", "flex", "important");
+            } else {
+                mybutton.style.setProperty("display", "none", "important");
+            }
+        };
+
+        mybutton.addEventListener("click", function () {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+    </script>
+
+    <div style="background-color: #0d0d66; padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-center text-md-start">
+            <p class="mb-1 mb-md-0 text-light" style="font-size: 0.9rem;">
+               <strong>Bản quyền thuộc</strong> &copy; <%= new Date().getFullYear() %> <strong>Công ty Cổ phần Viễn thông FPT</strong>.
+            </p>
+            <p class="mb-0 text-light" style="font-size: 0.9rem;">
+                Mã số thuế: <strong>0101778163-001</strong>
+            </p>
+        </div>
+    </div>
+</footer>

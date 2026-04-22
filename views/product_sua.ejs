@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <title><%= title %> | Kho FTEL</title>
+</head>
+
+<body>
+    <div class="container">
+        <%- include('includes/header') %>
+    </div>
+    <%- include('includes/navbar') %>
+
+    <div class="d-flex">
+        <div class="sidebar d-flex flex-column p-3">
+            <a href="/" class="d-flex align-items-center mb-4 text-decoration-none text-primary">
+                    <div>
+                        <img src="/images/fpt.png" alt="FPT" height="40" class="me-2">
+                        <p style="color :black"><b>FPT Telecom An Giang</b></p>
+                    </div>
+                </a>
+
+            <ul class="nav flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#collapseDanhMuc" data-bs-toggle="collapse" aria-expanded="false" class="nav-link d-flex justify-content-between align-items-center">
+                        <div><i class="bi bi-list-ul text-secondary"></i> Hệ thống</div>
+                        <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                    </a>
+                    <ul class="collapse nav flex-column ms-3" id="collapseDanhMuc">
+                        <li class="nav-item"><a href="/provider" class="nav-link"><i class="bi bi-shop text-secondary"></i> Nhà cung cấp</a></li>
+                        <li class="nav-item"><a href="/user" class="nav-link"><i class="bi bi-person-fill text-secondary"></i> Người dùng</a></li>
+                        <li class="nav-item"><a href="/request" class="nav-link "><i class="bi bi-file-earmark-text text-secondary"></i> Yêu cầu nhập hàng</a></li>
+                        
+                    </ul>
+                </li>
+
+                <li class="nav-item mt-1">
+                    <a href="#collapseKhoThietBi" data-bs-toggle="collapse" aria-expanded="true" class="nav-link d-flex justify-content-between align-items-center">
+                        <div><i class="bi bi-building text-secondary"></i> Kho thiết bị</div>
+                        <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s; transform: rotate(90deg);"></i>
+                    </a>
+                    <ul class="collapse show nav flex-column ms-3" id="collapseKhoThietBi">
+                        <li class="nav-item"><a href="/unit" class="nav-link"><i class="bi bi-tag-fill text-secondary"></i> Đơn vị tính</a></li>
+                        <li class="nav-item"><a href="/category" class="nav-link"><i class="bi bi-grid-fill text-secondary"></i> Danh mục thiết bị</a></li>
+                        <li class="nav-item">
+                            <a href="/product" class="nav-link text-primary fw-bold">
+                                <i class="bi bi-box-seam text-primary"></i> Thiết bị
+                            </a>
+                        </li>
+                        <li class="nav-item"><a href="/inventory" class="nav-link"><i class="bi bi-boxes text-secondary"></i> Tồn kho</a></li>
+                        <li class="nav-item"><a href="/importstock" class="nav-link"><i class="bi bi-box-arrow-in-right text-secondary"></i> Nhập kho</a></li>
+                        <li class="nav-item"><a href="/exportstock" class="nav-link"><i class="bi bi-box-arrow-right text-secondary"></i> Xuất kho</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content flex-grow-1 d-flex flex-column bg-light">
+            
+            <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0 fw-bold text-primary"><i class="bi bi-pencil-square me-2"></i>Cập nhật thiết bị</h4>
+                    <nav aria-label="breadcrumb" class="mt-2">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/product" class="text-decoration-none">Thiết bị</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Chỉnh sửa</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="p-4 flex-grow-1 overflow-auto">
+                <div class="card border-0 shadow-sm rounded-3" style="max-width: 800px; margin: 0 auto;">
+                    <div class="card-body p-4">
+                        
+                        <form action="/product/sua/<%= product._id %>" method="POST" enctype="multipart/form-data">
+                            
+                            <div class="row">
+                                <div class="col-md-3 mb-4">
+                                    <label for="productID" class="form-label fw-semibold">Mã SP</label>
+                                    <input type="text" class="form-control bg-light text-muted" id="productID" value="<%= product.productID %>" readonly>
+                                </div>
+
+                                <div class="col-md-9 mb-4">
+                                    <label for="productName" class="form-label fw-semibold">Tên Thiết bị <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="productName" name="productName" value="<%= product.productName %>" required autofocus>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="category" class="form-label fw-semibold">Danh mục <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <select class="form-select" id="category" name="category" required>
+                                            <option value="" disabled>-- Chọn Danh mục --</option>
+                                            <% categories.forEach(function(cat) { %>
+                                                <option value="<%= cat._id %>" <%= (product.category && product.category.toString() === cat._id.toString()) ? 'selected' : '' %>>
+                                                    <%= cat.categoryName %>
+                                                </option>
+                                            <% }) %>
+                                        </select>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddCategory" title="Thêm Danh mục mới">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="provider" class="form-label fw-semibold">Nhà cung cấp <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <select class="form-select" id="provider" name="provider" required>
+                                            <option value="" disabled>-- Chọn Nhà cung cấp --</option>
+                                            <% providers.forEach(function(prov) { %>
+                                                <option value="<%= prov._id %>" <%= (product.provider && product.provider.toString() === prov._id.toString()) ? 'selected' : '' %>>
+                                                    <%= prov.name || prov.providerName %>
+                                                </option>
+                                            <% }) %>
+                                        </select>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddProvider" title="Thêm Nhà cung cấp mới">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="unit" class="form-label fw-semibold">Đơn vị tính <span class="text-danger">*</span></label>
+                                    <div class="input-group">
+                                        <select class="form-select" id="unit" name="unit" required>
+                                            <option value="" disabled>-- Chọn Đơn vị --</option>
+                                            <% units.forEach(function(u) { %>
+                                                <option value="<%= u._id %>" <%= (product.unit && product.unit.toString() === u._id.toString()) ? 'selected' : '' %>>
+                                                    <%= u.unitName %>
+                                                </option>
+                                            <% }) %>
+                                        </select>
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddUnit" title="Thêm Đơn vị tính mới">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="price" class="form-label fw-semibold">Giá bán (VNĐ) <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="price" name="price" value="<%= product.price %>" min="0" required>
+                                </div>
+
+                                <div class="col-md-12 mb-4">
+                                    <label for="image" class="form-label fw-semibold">Hình ảnh sản phẩm</label>
+                                    
+                                    <% if (product.image) { %>
+                                        <div class="d-flex align-items-center gap-3 mb-2 p-2 border rounded bg-white">
+                                            <img src="<%= product.image %>" alt="Current image" class="rounded shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
+                                            <span class="text-muted small">Ảnh đang dùng. Chọn file mới bên dưới nếu muốn thay đổi.</span>
+                                        </div>
+                                    <% } %>
+
+                                    <input class="form-control" type="file" id="image" name="image" accept="image/*">
+                                    <small class="text-muted mt-1 d-block"><i class="bi bi-info-circle me-1"></i>Bỏ trống nếu không muốn đổi ảnh.</small>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                                <a href="/product" class="btn btn-light border">Hủy bỏ</a>
+                                <button type="submit" class="btn btn-success px-4">
+                                    <i class="bi bi-check2-circle me-1"></i> Lưu thay đổi
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAddUnit" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="bi bi-tag-fill me-2"></i>Thêm Đơn vị tính nhanh</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tên Đơn vị tính <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="newUnitName" placeholder="Ví dụ: Cái, Cuộn, Mét...">
+                        <div id="unitError" class="text-danger mt-2" style="display: none; font-size: 0.875em;">Vui lòng nhập tên đơn vị tính!</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary border" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveUnit"><i class="bi bi-floppy me-1"></i> Lưu ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAddCategory" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="bi bi-grid-fill me-2"></i>Thêm Danh mục nhanh</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tên Danh mục <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="newCategoryName" placeholder="Ví dụ: Thiết bị mạng, Vật tư...">
+                        <div id="categoryError" class="text-danger mt-2" style="display: none; font-size: 0.875em;">Vui lòng nhập tên danh mục!</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary border" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveCategory"><i class="bi bi-floppy me-1"></i> Lưu ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAddProvider" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title"><i class="bi bi-shop me-2"></i>Thêm Nhà cung cấp nhanh</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Tên Nhà cung cấp <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="newProviderName" placeholder="Ví dụ: Công ty TNHH ABC...">
+                        <div id="providerError" class="text-danger mt-2" style="display: none; font-size: 0.875em;">Vui lòng nhập tên nhà cung cấp!</div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary border" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" id="btnSaveProvider"><i class="bi bi-floppy me-1"></i> Lưu ngay</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('includes/footer') %>
+    <%- include('includes/javascript') %>
+
+    <script>
+        // --- AJAX THÊM ĐƠN VỊ TÍNH ---
+        document.getElementById('btnSaveUnit').addEventListener('click', async function () {
+            const inputVal = document.getElementById('newUnitName').value.trim();
+            const errBox = document.getElementById('unitError');
+            if (!inputVal) return errBox.style.display = 'block';
+            errBox.style.display = 'none';
+
+            try {
+                const res = await fetch('/unit/ajax-them', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ unitName: inputVal })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    const sel = document.getElementById('unit');
+                    sel.add(new Option(result.unit.unitName, result.unit._id));
+                    sel.value = result.unit._id; // Chọn luôn
+                    document.getElementById('newUnitName').value = '';
+                    bootstrap.Modal.getInstance(document.getElementById('modalAddUnit')).hide();
+                } else alert('Lỗi: ' + result.message);
+            } catch (e) { alert('Có lỗi xảy ra!'); }
+        });
+
+        // --- AJAX THÊM DANH MỤC ---
+        document.getElementById('btnSaveCategory').addEventListener('click', async function () {
+            const inputVal = document.getElementById('newCategoryName').value.trim();
+            const errBox = document.getElementById('categoryError');
+            if (!inputVal) return errBox.style.display = 'block';
+            errBox.style.display = 'none';
+
+            try {
+                const res = await fetch('/category/ajax-them', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ categoryName: inputVal })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    const sel = document.getElementById('category');
+                    sel.add(new Option(result.category.categoryName, result.category._id));
+                    sel.value = result.category._id; // Chọn luôn
+                    document.getElementById('newCategoryName').value = '';
+                    bootstrap.Modal.getInstance(document.getElementById('modalAddCategory')).hide();
+                } else alert('Lỗi: ' + result.message);
+            } catch (e) { alert('Có lỗi xảy ra!'); }
+        });
+
+        // --- AJAX THÊM NHÀ CUNG CẤP ---
+        document.getElementById('btnSaveProvider').addEventListener('click', async function () {
+            const inputVal = document.getElementById('newProviderName').value.trim();
+            const errBox = document.getElementById('providerError');
+            if (!inputVal) return errBox.style.display = 'block';
+            errBox.style.display = 'none';
+
+            try {
+                const res = await fetch('/provider/ajax-them', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: inputVal }) 
+                });
+                const result = await res.json();
+                if (result.success) {
+                    const sel = document.getElementById('provider');
+                    const displayName = result.provider.name || result.provider.providerName;
+                    sel.add(new Option(displayName, result.provider._id));
+                    sel.value = result.provider._id; // Chọn luôn
+                    document.getElementById('newProviderName').value = '';
+                    bootstrap.Modal.getInstance(document.getElementById('modalAddProvider')).hide();
+                } else alert('Lỗi: ' + result.message);
+            } catch (e) { alert('Có lỗi xảy ra!'); }
+        });
+    </script>
+</body>
+</html>

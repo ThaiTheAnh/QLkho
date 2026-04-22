@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <title>
+        <%= title %> | Kho FTEL
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <%- include('includes/header') %>
+    </div>
+
+    <%- include('includes/navbar') %>
+
+        <% if (currentUser) { %>
+            <div class="d-flex" style="height: calc(100vh - 140px);">
+
+                <div class="sidebar d-flex flex-column p-3 h-100 overflow-auto">
+                    <a href="/" class="d-flex align-items-center mb-4 text-decoration-none text-primary">
+                    <div>
+                        <img src="/images/fpt.png" alt="FPT" height="40" class="me-2">
+                        <p style="color :black"><b>FPT Telecom An Giang</b></p>
+                    </div>
+                </a>
+
+                    <ul class="nav flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#collapseDanhMuc" data-bs-toggle="collapse" aria-expanded="false"
+                                class="nav-link d-flex justify-content-between align-items-center">
+                                <div><i class="bi bi-list-ul text-secondary"></i> Hệ thống</div>
+                                <i class="bi bi-caret-right-fill rotate-icon"
+                                    style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                            </a>
+
+                            <ul class="collapse nav flex-column ms-3" id="collapseDanhMuc">
+                                <li class="nav-item">
+                                    <a href="/provider" class="nav-link">
+                                        <i class="bi bi-shop text-secondary"></i> Nhà cung cấp
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/user" class="nav-link">
+                                        <i class="bi bi-person-fill text-secondary"></i> Người dùng
+                                    </a>
+                                </li>
+                                <li class="nav-item"><a href="/request" class="nav-link "><i class="bi bi-file-earmark-text text-secondary"></i> Yêu cầu nhập hàng</a></li>
+                                
+                            </ul>
+                        </li>
+
+                        <li class="nav-item mt-1">
+                            <a href="#collapseKhoThietBi" data-bs-toggle="collapse" aria-expanded="false"
+                                class="nav-link d-flex justify-content-between align-items-center">
+                                <div><i class="bi bi-building text-secondary"></i> Kho thiết bị</div>
+                                <i class="bi bi-caret-right-fill rotate-icon"
+                                    style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                            </a>
+
+                            <ul class="collapse nav flex-column ms-3" id="collapseKhoThietBi">
+                                <li class="nav-item">
+                                    <a href="/unit" class="nav-link">
+                                        <i class="bi bi-tag-fill text-secondary"></i> Đơn vị tính
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/category" class="nav-link">
+                                        <i class="bi bi-grid-fill text-secondary"></i> Danh mục thiết bị
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/product" class="nav-link">
+                                        <i class="bi bi-box-seam text-secondary"></i> Thiết bị
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/inventory" class="nav-link">
+                                        <i class="bi bi-boxes text-secondary"></i> Tồn kho
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/importstock" class="nav-link text-primary fw-bold">
+                                        <i class="bi bi-box-arrow-in-right text-primary"></i> Nhập kho
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/exportstock" class="nav-link">
+                                        <i class="bi bi-box-arrow-right text-secondary"></i> Xuất kho
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="main-content flex-grow-1 d-flex flex-column bg-light h-100 overflow-hidden">
+
+                    <div
+                        class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center flex-shrink-0">
+                        <div>
+                            <h4 class="mb-0 fw-bold text-primary"><i class="bi bi-journal-plus me-2"></i>Lập Phiếu Nhập
+                                Kho</h4>
+                            <nav aria-label="breadcrumb" class="mt-2">
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="/importstock" class="text-decoration-none">Nhập
+                                            kho</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Lập phiếu mới</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <div class="p-4 flex-grow-1 overflow-auto">
+                        <form action="/importstock/them" method="POST" id="importForm">
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                                        <div class="card-header bg-white py-3 fw-bold text-dark border-bottom">
+                                            <i class="bi bi-info-circle me-1 text-primary"></i> Thông tin chung
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Nhà cung cấp <span
+                                                        class="text-danger">*</span></label>
+                                                <select class="form-select" name="provider" required>
+                                                    <option value="" disabled selected>-- Chọn Nhà cung cấp --</option>
+                                                    <% providers.forEach(function(prov) { %>
+                                                        <option value="<%= prov._id %>">
+                                                            <%= prov.ProviderName || prov.name || prov.providerName %>
+                                                        </option>
+                                                    <% }) %>
+                                                </select>
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Số hóa đơn / Chứng từ</label>
+                                                <input type="text" class="form-control" name="invoiceNumber" placeholder="Nhập số hóa đơn (nếu có)">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Ngày nhập hàng</label>
+                                                <input type="date" class="form-control" name="dateImport" id="todayDate"
+                                                    required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Ghi chú đợt nhập</label>
+                                                <textarea class="form-control" name="note" rows="3"
+                                                    placeholder="Ví dụ: Nhập hàng quý 1/2026..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8 mb-4">
+                                    <div class="card border-0 shadow-sm rounded-3 h-100">
+                                        <div
+                                            class="card-header bg-white py-3 d-flex justify-content-between align-items-center border-bottom">
+                                            <span class="fw-bold text-dark"><i
+                                                    class="bi bi-box-seam me-1 text-primary"></i> Danh sách thiết bị
+                                                nhập</span>
+                                            <div class="d-flex gap-2">
+                                                <input type="file" id="excelFileInput" accept=".xlsx, .xls"
+                                                    style="display: none;" onchange="handleExcelUpload(event)">
+                                                <button type="button" class="btn btn-sm btn-outline-success fw-semibold"
+                                                    onclick="document.getElementById('excelFileInput').click()">
+                                                    <i class="bi bi-file-earmark-excel"></i> Import Excel
+                                                </button>
+
+                                                <button type="button" class="btn btn-sm btn-outline-primary"
+                                                    id="btnAddRow">
+                                                    <i class="bi bi-plus-lg"></i> Thêm dòng
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-borderless align-middle mb-0" id="itemsTable">
+                                                    <thead class="table-light border-bottom">
+                                                        <tr>
+                                                            <th style="width: 5%">#</th>
+                                                            <th style="width: 60%">Tên thiết bị <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th style="width: 25%">Số lượng <span
+                                                                    class="text-danger">*</span></th>
+                                                            <th style="width: 10%" class="text-center">Xóa</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="itemsBody">
+                                                        <tr class="border-bottom item-row">
+                                                            <td class="text-center text-muted row-number">1</td>
+                                                            <td>
+                                                                <select class="form-select product-select"
+                                                                    name="productId" required>
+                                                                    <option value="" disabled selected>-- Chọn thiết bị
+                                                                        --</option>
+                                                                    <% products.forEach(function(p) { %>
+                                                                        <option value="<%= p._id %>"
+                                                                            data-code="<%= p.productID %>">
+                                                                            [<%= p.productID %>] <%= p.productName %>
+                                                                        </option>
+                                                                        <% }) %>
+                                                                </select>
+                                                            </td>
+                                                            <td>
+                                                                <input type="number" class="form-control"
+                                                                    name="quantity" min="1" value="1" required>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <button type="button"
+                                                                    class="btn btn-light text-danger btn-remove-row"
+                                                                    disabled>
+                                                                    <i class="bi bi-trash"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-end gap-2 mt-2 pt-3 border-top">
+                                <a href="/importstock" class="btn btn-light border px-4">Hủy bỏ</a>
+                                <button type="submit" class="btn btn-primary px-5 shadow-sm">
+                                    <i class="bi bi-floppy me-1"></i> Lưu Phiếu Nhập
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+                <div class="container mt-5 text-center">
+                    <div class="alert alert-warning" role="alert">
+                        Vui lòng <a href="/auth/login" class="alert-link">đăng nhập</a> để truy cập hệ thống.
+                    </div>
+                </div>
+                <% } %>
+
+                    <%- include('includes/footer') %>
+                        <%- include('includes/javascript') %>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function () {
+                                    // Tự động điền ngày hôm nay vào ô Date
+                                    document.getElementById('todayDate').valueAsDate = new Date();
+
+                                    const tbody = document.getElementById('itemsBody');
+                                    const btnAddRow = document.getElementById('btnAddRow');
+
+                                    // Cập nhật lại Số thứ tự và trạng thái Nút Xóa
+                                    function updateRows() {
+                                        const rows = tbody.querySelectorAll('tr');
+                                        rows.forEach((row, index) => {
+                                            // Cập nhật STT
+                                            row.querySelector('.row-number').textContent = index + 1;
+
+                                            // Nút xóa chỉ bị disable nếu chỉ còn đúng 1 dòng
+                                            const btnRemove = row.querySelector('.btn-remove-row');
+                                            if (rows.length === 1) {
+                                                btnRemove.disabled = true;
+                                                btnRemove.classList.replace('text-danger', 'text-muted');
+                                            } else {
+                                                btnRemove.disabled = false;
+                                                btnRemove.classList.replace('text-muted', 'text-danger');
+                                            }
+                                        });
+                                    }
+
+                                    // Xử lý sự kiện Thêm dòng mới
+                                    btnAddRow.addEventListener('click', function () {
+                                        const firstRow = tbody.querySelector('tr');
+                                        const newRow = firstRow.cloneNode(true); // Copy y hệt dòng đầu tiên
+
+                                        // Reset lại giá trị (chọn lại từ đầu)
+                                        newRow.querySelector('select').selectedIndex = 0;
+                                        newRow.querySelector('input[type="number"]').value = 1;
+
+                                        tbody.appendChild(newRow); // Nối vào cuối bảng
+                                        updateRows();
+                                    });
+
+                                    // Xử lý sự kiện Xóa dòng (Dùng Event Delegation bắt sự kiện click trong tbody)
+                                    tbody.addEventListener('click', function (e) {
+                                        // Nếu bấm trúng cái nút có class btn-remove-row hoặc icon thùng rác bên trong nó
+                                        const btn = e.target.closest('.btn-remove-row');
+                                        if (btn && !btn.disabled) {
+                                            const row = btn.closest('tr');
+                                            row.remove();
+                                            updateRows();
+                                        }
+                                    });
+                                });
+                                document.getElementById('importForm').addEventListener('submit', function () {
+                                    const btnSubmit = this.querySelector('button[type="submit"]');
+                                    btnSubmit.disabled = true;
+                                    btnSubmit.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Đang lưu...';
+                                });
+                            </script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+                            <script>
+                                function handleExcelUpload(event) {
+                                    const file = event.target.files[0];
+                                    if (!file) return;
+
+                                    const reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        const data = new Uint8Array(e.target.result);
+                                        const workbook = XLSX.read(data, { type: 'array' });
+
+                                        const firstSheetName = workbook.SheetNames[0];
+                                        const worksheet = workbook.Sheets[firstSheetName];
+
+                                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                                        if (jsonData.length === 0) {
+                                            alert("File Excel trống!");
+                                            return;
+                                        }
+
+                                        const tbody = document.getElementById('itemsBody');
+                                        if (tbody.querySelectorAll('tr').length === 1 && tbody.querySelector('select').value === "") {
+                                            tbody.innerHTML = '';
+                                        }
+
+                                        let successCount = 0;
+                                        let errorItems = [];
+
+                                        // Thuật toán quét thông minh (Không phân biệt hoa/thường hay khoảng trắng dư)
+                                        const getVal = (obj, searchStr) => {
+                                            const key = Object.keys(obj).find(k => k.toLowerCase().trim() === searchStr.toLowerCase());
+                                            return key ? obj[key] : undefined;
+                                        };
+
+                                        jsonData.forEach((row) => {
+                                            // Lấy dữ liệu bất chấp sếp gõ "Mã SP" hay "mã sp", "Số Lượng" hay "Số lượng"
+                                            const maSP = getVal(row, 'mã sp');
+                                            let soLuong = getVal(row, 'số lượng');
+
+                                            if (maSP && soLuong) {
+                                                const tempSelect = document.createElement('select');
+                                                tempSelect.innerHTML = `<option value="" disabled selected>-- Chọn thiết bị --</option>
+                                            <% products.forEach(function(p) { %>
+                                                <option value="<%= p._id %>" data-code="<%= p.productID %>">[<%= p.productID %>] <%= p.productName %></option>
+                                            <% }) %>`;
+
+                                                // Tìm Option khớp với mã SP sếp gõ trong Excel
+                                                const targetOption = Array.from(tempSelect.options).find(opt => opt.getAttribute('data-code') === String(maSP).trim());
+
+                                                if (targetOption) {
+                                                    const tr = document.createElement('tr');
+                                                    tr.className = 'border-bottom item-row';
+
+                                                    // Cấu trúc HTML này đã sửa lại để khớp 100% với giao diện bảng Nhập kho của sếp
+                                                    tr.innerHTML = `
+                                                        <td class="text-center text-muted row-number"></td>
+                                                        <td>
+                                                            <select class="form-select product-select" name="productId" required>
+                                                                ${tempSelect.innerHTML}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control" name="quantity" min="1" value="${soLuong}" required>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-light text-danger btn-remove-row"><i class="bi bi-trash"></i></button>
+                                                        </td>
+                                                    `;
+
+                                                    tr.querySelector('select').value = targetOption.value;
+                                                    tbody.appendChild(tr);
+                                                    successCount++;
+                                                } else {
+                                                    errorItems.push(maSP); // Mã lỗi vì không tồn tại trong Database
+                                                }
+                                            }
+                                        });
+
+                                        // Cập nhật lại số thứ tự STT
+                                        if (typeof updateRows === "function") updateRows();
+
+                                        let msg = `🎉 Đã Import thành công ${successCount} thiết bị.`;
+                                        if (errorItems.length > 0) {
+                                            msg += `\n\n Bỏ qua các Mã SP sau do không có trong hệ thống: ${errorItems.join(', ')}`;
+                                        }
+                                        alert(msg);
+
+                                        event.target.value = '';
+                                    };
+                                    reader.readAsArrayBuffer(file);
+                                }
+                            </script>
+</body>
+
+</html>

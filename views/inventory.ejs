@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <title><%= title %> | Kho FTEL</title>
+</head>
+
+<body>
+    <div class="container">
+        <%- include('includes/header') %>
+    </div>
+    
+    <%- include('includes/navbar') %>
+
+    <% if (currentUser) { %>
+        <div class="d-flex" style="height: calc(100vh - 140px);">
+            
+            <div class="sidebar d-flex flex-column p-3 h-100 overflow-auto">
+                <a href="/" class="d-flex align-items-center mb-4 text-decoration-none text-primary">
+                    <div>
+                        <img src="/images/fpt.png" alt="FPT" height="40" class="me-2">
+                        <p style="color :black"><b>FPT Telecom An Giang</b></p>
+                    </div>
+                </a>
+
+                <ul class="nav flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="#collapseDanhMuc" data-bs-toggle="collapse" aria-expanded="false" class="nav-link d-flex justify-content-between align-items-center">
+                            <div><i class="bi bi-list-ul text-secondary"></i> Hệ thống</div>
+                            <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                        </a>
+                        <ul class="collapse nav flex-column ms-3" id="collapseDanhMuc">
+                            <li class="nav-item"><a href="/provider" class="nav-link"><i class="bi bi-shop text-secondary"></i> Nhà cung cấp</a></li>
+                            <li class="nav-item"><a href="/user" class="nav-link"><i class="bi bi-person-fill text-secondary"></i> Người dùng</a></li>
+                            <li class="nav-item"><a href="/request" class="nav-link "><i class="bi bi-file-earmark-text text-secondary"></i> Yêu cầu nhập hàng</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item mt-1">
+                        <a href="#collapseKhoThietBi" data-bs-toggle="collapse" aria-expanded="true" class="nav-link d-flex justify-content-between align-items-center">
+                            <div><i class="bi bi-building text-secondary"></i> Kho thiết bị</div>
+                            <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s; transform: rotate(90deg);"></i>
+                        </a>
+                        <ul class="collapse show nav flex-column ms-3" id="collapseKhoThietBi">
+                            <li class="nav-item"><a href="/unit" class="nav-link"><i class="bi bi-tag-fill text-secondary"></i> Đơn vị tính</a></li>
+                            <li class="nav-item"><a href="/category" class="nav-link"><i class="bi bi-grid-fill text-secondary"></i> Danh mục thiết bị</a></li>
+                            <li class="nav-item"><a href="/product" class="nav-link"><i class="bi bi-box-seam text-secondary"></i> Thiết bị</a></li>
+                            <li class="nav-item">
+                                <a href="/inventory" class="nav-link text-primary fw-bold">
+                                    <i class="bi bi-boxes text-primary"></i> Tồn kho
+                                </a>
+                            </li>
+                            <li class="nav-item"><a href="/importstock" class="nav-link"><i class="bi bi-box-arrow-in-right text-secondary"></i> Nhập kho</a></li>
+                            <li class="nav-item"><a href="/exportstock" class="nav-link"><i class="bi bi-box-arrow-right text-secondary"></i> Xuất kho</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="main-content flex-grow-1 d-flex flex-column bg-light h-100 overflow-hidden">
+                <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center flex-shrink-0">
+                    <div>
+                        <h4 class="mb-0 fw-bold text-primary"><i class="bi bi-boxes me-2"></i>Thống kê Tồn Kho</h4>
+                        <nav aria-label="breadcrumb" class="mt-2">
+                            <ol class="breadcrumb mb-0">
+                                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Kho thiết bị</li>
+                                <li class="breadcrumb-item active" aria-current="page">Tồn kho</li>
+                            </ol>
+                        </nav>
+                    </div>
+                    <div>
+                        <a href="/inventory/in-bao-cao" class="btn btn-outline-danger shadow-sm fw-semibold">
+                            <i class="bi bi-file-earmark-pdf me-1"></i> Xuất báo cáo PDF
+                        </a>
+                    </div>
+                </div>
+
+                <div class="p-4 flex-grow-1 overflow-auto">
+                    <div class="card border-0 shadow-sm rounded-3 mb-4">
+                        <div class="card-body">
+                            <form action="/inventory" method="GET" class="row g-3 align-items-end">
+                                <div class="col-md-6">
+                                    <label class="form-label text-muted fw-semibold small">Tìm kiếm thiết bị</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                                        <input type="text" class="form-control" name="search" placeholder="Nhập tên thiết bị, Mã thiết bị..." value="<%= typeof filters !== 'undefined' ? filters.search : '' %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label text-muted fw-semibold small">Trạng thái kho</label>
+                                    <% let currentStatus = (typeof filters !== 'undefined' && filters.status) ? filters.status : ''; %>
+                                    <select class="form-select" name="status">
+                                        <option value="" <%= currentStatus === '' ? 'selected' : '' %>>-- Tất cả --</option>
+                                        <option value="low" <%= currentStatus === 'low' ? 'selected' : '' %>>Sắp hết hàng (≤ 20)</option>
+                                        <option value="high" <%= currentStatus === 'high' ? 'selected' : '' %>>Tồn kho nhiều (> 20)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary flex-grow-1"><i class="bi bi-funnel"></i> Lọc</button>
+                                    <a href="/inventory" class="btn btn-light border"><i class="bi bi-arrow-clockwise"></i></a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" class="text-center py-3" style="width: 5%">STT</th>
+                                            <th scope="col" class="py-3" style="width: 15%">Mã Thiết bị</th>
+                                            <th scope="col" class="py-3" style="width: 30%">Tên Thiết bị</th>
+                                            <th scope="col" class="text-center py-3" style="width: 10%">Đơn vị</th>
+                                            <th scope="col" class="text-end py-3" style="width: 15%">Giá bán (VNĐ)</th>
+                                            <th scope="col" class="text-end py-3" style="width: 15%">Tổng giá trị</th>
+                                            <th scope="col" class="text-center py-3" style="width: 10%">SL Tồn</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% if (typeof inventories !== 'undefined' && inventories.length > 0) { %>
+                                            <% inventories.forEach(function(item, index) { 
+                                                let price = item.product ? (item.product.price || 0) : 0;
+                                                let itemTotal = price * item.quantity;
+                                            %>
+                                                <tr>
+                                                    <td class="text-center fw-semibold text-muted"><%= index + 1 %></td>
+                                                    <td>
+                                                        <span class="badge bg-secondary bg-opacity-10 text-secondary border px-2 py-1 fs-6">
+                                                            <%= item.product ? item.product.productID : 'N/A' %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="fw-bold text-dark">
+                                                        <%= item.product ? item.product.productName : 'Sản phẩm không xác định' %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="text-muted">
+                                                            <%= (item.product && item.product.unit) ? (item.product.unit.unitName || item.product.unit.name) : '---' %>
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-end text-muted">
+                                                        <%= price.toLocaleString('vi-VN') %>
+                                                    </td>
+                                                    <td class="text-end fw-semibold text-primary">
+                                                        <%= itemTotal.toLocaleString('vi-VN') %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <% 
+                                                            let badgeClass = 'bg-success'; 
+                                                            if (item.quantity === 0) {
+                                                                badgeClass = 'bg-danger'; 
+                                                            } else if (item.quantity <= 20) {
+                                                                badgeClass = 'bg-warning text-dark'; 
+                                                            } else if (item.quantity > 20) {
+                                                                badgeClass = 'bg-info text-dark';
+                                                            }
+                                                        %>
+                                                        <span class="badge <%= badgeClass %> rounded-pill fs-6 px-3 shadow-sm">
+                                                            <%= item.quantity %>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            <% }) %>
+                                            
+                                            <tr class="table-light fw-bold">
+                                                <td colspan="5" class="text-end text-uppercase">Tổng giá trị kho:</td>
+                                                <td class="text-end text-danger fs-5">
+                                                    <%= (typeof totalValue !== 'undefined' ? totalValue : 0).toLocaleString('vi-VN') %> ₫
+                                                </td>
+                                                <td></td>
+                                            </tr>
+                                        <% } else { %>
+                                            <tr>
+                                                <td colspan="7" class="text-center py-5 text-muted">
+                                                    <i class="bi bi-box2-heart fs-1 d-block mb-3 text-secondary"></i>
+                                                    Kho hiện đang trống. Hãy nhập kho để cập nhật số liệu!
+                                                </td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    <% } else { %>
+        <div class="container mt-5 text-center">
+             <div class="alert alert-warning" role="alert">
+                Vui lòng <a href="/auth/login" class="alert-link">đăng nhập</a> để truy cập hệ thống.
+             </div>
+        </div>
+    <% } %>
+
+    <%- include('includes/footer') %>
+    <%- include('includes/javascript') %>
+</body>
+</html>

@@ -1,0 +1,61 @@
+:root {
+            --navy-color: #013a63;
+            --sidebar-bg: #f4f7fb;
+            --active-item-bg: #e0e7ff;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            border-right: 1px solid #dee2e6;
+            overflow-y: auto;
+        }
+        
+        .main-content {
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .header-custom {
+            background-color: var(--navy-color);
+        }
+        
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .nav-link:hover {
+            background-color: #e9ecef;
+            color: #000;
+        }
+        .nav-link.active {
+            background-color: var(--active-item-bg);
+            color: #000000;
+            font-weight: 600;
+        }
+        .nav-link i {
+            width: 24px;
+            font-size: 1.1rem;
+        }
+        
+        .summary-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        a[aria-expanded="true"] .rotate-icon {
+    transform: rotate(90deg);
+    }

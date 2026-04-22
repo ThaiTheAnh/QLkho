@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <title><%= title %> | Kho FTEL</title>
+</head>
+
+<body>
+    <div class="container">
+        <%- include('includes/header') %>
+    </div>
+    <%- include('includes/navbar') %>
+
+    <div class="d-flex">
+        <div class="sidebar d-flex flex-column p-3">
+            <a href="/" class="d-flex align-items-center mb-4 text-decoration-none text-primary">
+                    <div>
+                        <img src="/images/fpt.png" alt="FPT" height="40" class="me-2">
+                        <p style="color :black"><b>FPT Telecom An Giang</b></p>
+                    </div>
+                </a>
+
+            <ul class="nav flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#collapseDanhMuc" data-bs-toggle="collapse" aria-expanded="false" class="nav-link d-flex justify-content-between align-items-center">
+                        <div><i class="bi bi-list-ul text-secondary"></i> Hệ thống</div>
+                        <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                    </a>
+                    <ul class="collapse nav flex-column ms-3" id="collapseDanhMuc">
+                        <li class="nav-item"><a href="/provider" class="nav-link"><i class="bi bi-shop text-secondary"></i> Nhà cung cấp</a></li>
+                        <li class="nav-item"><a href="/user" class="nav-link"><i class="bi bi-person-fill text-secondary"></i> Người dùng</a></li>
+                        <li class="nav-item"><a href="/request" class="nav-link "><i class="bi bi-file-earmark-text text-secondary"></i> Yêu cầu nhập hàng</a></li>
+                        
+                    </ul>
+                </li>
+
+                <li class="nav-item mt-1">
+                    <a href="#collapseKhoThietBi" data-bs-toggle="collapse" aria-expanded="true" class="nav-link d-flex justify-content-between align-items-center">
+                        <div><i class="bi bi-building text-secondary"></i> Kho thiết bị</div>
+                        <i class="bi bi-caret-right-fill rotate-icon" style="font-size: 0.8rem; transition: transform 0.3s; transform: rotate(90deg);"></i>
+                    </a>
+                    <ul class="collapse show nav flex-column ms-3" id="collapseKhoThietBi">
+                        <li class="nav-item"><a href="/unit" class="nav-link"><i class="bi bi-tag-fill text-secondary"></i> Đơn vị tính</a></li>
+                        <li class="nav-item"><a href="/category" class="nav-link"><i class="bi bi-grid-fill text-secondary"></i> Danh mục thiết bị</a></li>
+                        <li class="nav-item">
+                            <a href="/product" class="nav-link text-primary fw-bold">
+                                <i class="bi bi-box-seam text-primary"></i> Thiết bị
+                            </a>
+                        </li>
+                        <li class="nav-item"><a href="/inventory" class="nav-link"><i class="bi bi-boxes text-secondary"></i> Tồn kho</a></li>
+                        <li class="nav-item"><a href="/importstock" class="nav-link"><i class="bi bi-box-arrow-in-right text-secondary"></i> Nhập kho</a></li>
+                        <li class="nav-item"><a href="/exportstock" class="nav-link"><i class="bi bi-box-arrow-right text-secondary"></i> Xuất kho</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content flex-grow-1 d-flex flex-column bg-light">
+
+            <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0 fw-bold text-primary"><i class="bi bi-box-seam me-2"></i>Quản lý Thiết Bị</h4>
+                    <nav aria-label="breadcrumb" class="mt-2">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a></li>
+                            <li class="breadcrumb-item"><a href="#" class="text-decoration-none">Kho thiết bị</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Thiết Bị</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div>
+                    <a href="/product/them" class="btn btn-primary shadow-sm fw-semibold">
+                        <i class="bi bi-plus-circle me-1"></i> Thêm Thiết Bị
+                    </a>
+                </div>
+            </div>
+
+            <div class="p-4 flex-grow-1 overflow-auto">
+                
+                <div class="card border-0 shadow-sm rounded-3 mb-3 bg-white">
+                    <div class="card-body p-3">
+                        <form action="/product" method="GET" class="row align-items-center m-0 gx-2">
+                            
+                            <div class="col-md-5 col-sm-12 mb-2 mb-md-0">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0 text-muted">
+                                        <i class="bi bi-search"></i>
+                                    </span>
+                                    <input type="text" class="form-control border-start-0 ps-0 border-primary-subtle" 
+                                           name="search" placeholder="Nhập tên hoặc mã thiết bị..." 
+                                           value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 col-sm-8 mb-2 mb-md-0">
+                                <select class="form-select border-primary-subtle" id="categoryFilter" name="category" onchange="this.form.submit()">
+                                    <option value="all" <%= (!selectedCategory || selectedCategory === 'all') ? 'selected' : '' %>>-- Tất cả danh mục --</option>
+                                    <% categories.forEach(function(cat) { %>
+                                        <option value="<%= cat._id %>" <%= (selectedCategory === cat._id.toString()) ? 'selected' : '' %>>
+                                            <%= cat.categoryName %>
+                                        </option>
+                                    <% }) %>
+                                </select>
+                            </div>
+
+                            <div class="col-auto mb-2 mb-md-0">
+                                <button type="submit" class="btn btn-primary px-4 shadow-sm">
+                                    Tìm kiếm
+                                </button>
+                            </div>
+
+                            <% if ((selectedCategory && selectedCategory !== 'all') || (typeof searchQuery !== 'undefined' && searchQuery !== '')) { %>
+                                <div class="col-auto mb-2 mb-md-0">
+                                    <a href="/product" class="btn btn-light border text-danger" title="Xóa toàn bộ lọc">
+                                        <i class="bi bi-x-circle me-1"></i> Bỏ lọc
+                                    </a>
+                                </div>
+                            <% } %>
+
+                        </form>
+                    </div>
+                </div>
+            
+
+                <div class="card border-0 shadow-sm rounded-3">
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col" class="text-center py-3" style="width: 5%">STT</th>
+                                        <th scope="col" class="py-3" style="width: 15%">Mã TB</th>
+                                        <th scope="col" class="py-3" style="width: 15%">Danh mục</th>
+                                        <th scope="col" class="py-3" style="width: 25%">Tên Thiết bị</th>
+                                        <th scope="col" class="text-center py-3" style="width: 10%">Hình ảnh</th>
+                                        <th scope="col" class="text-end py-3" style="width: 15%">Giá bán</th>
+                                        <th scope="col" class="text-center py-3" style="width: 15%">Hành động</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if (typeof products !== 'undefined' && products.length > 0) { %>
+                                        <% products.forEach(function(p, index) { %>
+                                            <tr>
+                                                <td class="text-center fw-semibold text-muted">
+                                                    <%= index + 1 %>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 py-1 fs-6">
+                                                        <%= p.productID %>
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge bg-secondary">
+                                                        <%= p.category ? p.category.categoryName : 'N/A' %>
+                                                    </span>
+                                                </td>
+                                                <td class="fw-bold text-dark">
+                                                    <%= p.productName %>
+                                                    <small class="d-block text-muted fw-normal mt-1">ĐVT: <%= p.unit ? p.unit.unitName : 'N/A' %></small>
+                                                </td>
+                                                <td class="text-center">
+                                                    <% if (p.image) { %>
+                                                        <img src="<%= p.image %>" alt="<%= p.productName %>" class="rounded border shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                                    <% } else { %>
+                                                        <div class="bg-light rounded border d-flex align-items-center justify-content-center mx-auto text-muted" style="width: 50px; height: 50px;">
+                                                            <i class="bi bi-image"></i>
+                                                        </div>
+                                                    <% } %>
+                                                </td>
+                                                <td class="text-end fw-semibold text-danger">
+                                                    <%= p.price ? p.price.toLocaleString('vi-VN') + ' đ' : '0 đ' %>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="d-flex justify-content-center gap-2">
+                                                        <a href="/product/sua/<%= p._id %>" class="btn btn-outline-primary btn-sm" title="Sửa">
+                                                            <i class="bi bi-pencil-square"></i>
+                                                        </a>
+                                                        <% if (currentUser && currentUser.role === 'admin') { %>
+                                                            <a href="/product/xoa/<%= p._id %>" class="btn btn-outline-danger btn-sm" title="Xóa" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                                                                <i class="bi bi-trash"></i>
+                                                            </a>
+                                                        <% } else { %>
+                                                            <span class="text-muted mt-1" title="Chỉ Admin mới có quyền xóa">
+                                                                <i class="bi bi-shield-lock-fill fs-6"></i>
+                                                            </span>
+                                                        <% } %>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        <% }) %>
+                                    <% } else { %>
+                                        <tr>
+                                            <td colspan="7" class="text-center py-5 text-muted">
+                                                <i class="bi bi-box-seam fs-1 d-block mb-3"></i>
+                                                Chưa có dữ liệu Sản phẩm nào. Hãy thêm mới!
+                                            </td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <%- include('includes/footer') %>
+    <%- include('includes/javascript') %>
+</body>
+</html>

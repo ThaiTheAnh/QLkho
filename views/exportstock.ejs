@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/style.css">
+    <title>
+        <%= title %> | Kho FTEL
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <%- include('includes/header') %>
+    </div>
+
+    <%- include('includes/navbar') %>
+
+        <% if (currentUser) { %>
+            <div class="d-flex" style="height: calc(100vh - 140px);">
+
+                <div class="sidebar d-flex flex-column p-3 h-100 overflow-auto">
+                    <a href="/" class="d-flex align-items-center mb-4 text-decoration-none text-primary">
+                        <div>
+                            <img src="/images/fpt.png" alt="FPT" height="40" class="me-2">
+                            <p style="color :black"><b>FPT Telecom An Giang</b></p>
+                        </div>
+                    </a>
+
+                    <ul class="nav flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#collapseDanhMuc" data-bs-toggle="collapse" aria-expanded="false"
+                                class="nav-link d-flex justify-content-between align-items-center">
+                                <div><i class="bi bi-list-ul text-secondary"></i> Hệ thống</div>
+                                <i class="bi bi-caret-right-fill rotate-icon"
+                                    style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                            </a>
+                            <ul class="collapse nav flex-column ms-3" id="collapseDanhMuc">
+                                <li class="nav-item"><a href="/provider" class="nav-link"><i
+                                            class="bi bi-shop text-secondary"></i> Nhà cung cấp</a></li>
+                                <li class="nav-item"><a href="/user" class="nav-link"><i
+                                            class="bi bi-person-fill text-secondary"></i> Người dùng</a></li>
+                                <li class="nav-item"><a href="/request" class="nav-link "><i
+                                            class="bi bi-file-earmark-text text-secondary"></i> Yêu cầu nhập hàng</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item mt-1">
+                            <a href="#collapseKhoThietBi" data-bs-toggle="collapse" aria-expanded="true"
+                                class="nav-link d-flex justify-content-between align-items-center">
+                                <div><i class="bi bi-building text-secondary"></i> Kho thiết bị</div>
+                                <i class="bi bi-caret-right-fill rotate-icon"
+                                    style="font-size: 0.8rem; transition: transform 0.3s; transform: rotate(90deg);"></i>
+                            </a>
+                            <ul class="collapse show nav flex-column ms-3" id="collapseKhoThietBi">
+                                <li class="nav-item"><a href="/unit" class="nav-link"><i
+                                            class="bi bi-tag-fill text-secondary"></i> Đơn vị tính</a></li>
+                                <li class="nav-item"><a href="/category" class="nav-link"><i
+                                            class="bi bi-grid-fill text-secondary"></i> Danh mục thiết bị</a></li>
+                                <li class="nav-item"><a href="/product" class="nav-link"><i
+                                            class="bi bi-box-seam text-secondary"></i> Thiết bị</a></li>
+                                <li class="nav-item"><a href="/inventory" class="nav-link"><i
+                                            class="bi bi-boxes text-secondary"></i> Tồn kho</a></li>
+                                <li class="nav-item"><a href="/importstock" class="nav-link"><i
+                                            class="bi bi-box-arrow-in-right text-secondary"></i> Nhập kho</a></li>
+                                <li class="nav-item"><a href="/exportstock" class="nav-link text-danger fw-bold"><i
+                                            class="bi bi-box-arrow-right text-danger"></i> Xuất kho</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="main-content flex-grow-1 d-flex flex-column bg-light h-100 overflow-hidden">
+
+                    <div
+                        class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center flex-shrink-0">
+                        <div>
+                            <h4 class="mb-0 fw-bold text-danger"><i class="bi bi-box-arrow-right me-2"></i>Quản lý Xuất
+                                Kho</h4>
+                            <nav aria-label="breadcrumb" class="mt-2">
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Trang chủ</a>
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">Xuất kho</li>
+                                </ol>
+                            </nav>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <% if (currentUser && currentUser.role === 'admin') { %>
+                                <a href="/exportstock/thung-rac" class="btn btn-outline-danger shadow-sm fw-semibold">
+                                    <i class="bi bi-trash3 me-1"></i> Thùng rác
+                                </a>
+                            <% } %>
+                            <a href="/exportstock/them" class="btn btn-danger shadow-sm fw-semibold">
+                                <i class="bi bi-plus-lg me-1"></i> Lập phiếu xuất
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="p-4 flex-grow-1 overflow-auto">
+                        <div class="card border-0 shadow-sm rounded-3 mb-4">
+                            <div class="card-body">
+                                <form action="/exportstock" method="GET" class="row g-3 align-items-end">
+                                    <div class="col-md-5"> <label class="form-label text-muted fw-semibold small">Tìm kiếm</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-white"><i
+                                                    class="bi bi-search text-muted"></i></span>
+                                            <input type="text" class="form-control" name="search"
+                                                placeholder="Mã PX, Tên KH, SĐT, Số Hợp đồng..."
+                                                value="<%= filters.search || '' %>">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label text-muted fw-semibold small">Từ ngày</label>
+                                        <input type="date" class="form-control" name="fromDate"
+                                            value="<%= filters.fromDate || '' %>">
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label class="form-label text-muted fw-semibold small">Đến ngày</label>
+                                        <input type="date" class="form-control" name="toDate"
+                                            value="<%= filters.toDate || '' %>">
+                                    </div>
+                                    <div class="col-md-3 d-flex gap-2">
+                                        <button type="submit" class="btn btn-danger flex-grow-1"><i
+                                                class="bi bi-funnel"></i> Lọc</button>
+                                        <a href="/exportstock" class="btn btn-light border"><i
+                                                class="bi bi-arrow-clockwise"></i></a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="card border-0 shadow-sm rounded-3">
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" class="text-center py-3" style="width: 5%">STT</th>
+                                                <th scope="col" class="py-3" style="width: 10%">Mã Phiếu</th>
+                                                <th scope="col" class="py-3" style="width: 12%">Số HĐ/CT</th> 
+                                                <th scope="col" class="py-3" style="width: 10%">Ngày xuất</th>
+                                                <th scope="col" class="py-3" style="width: 20%">Người nhận</th>
+                                                <th scope="col" class="py-3" style="width: 15%">Lý do xuất</th>
+                                                <th scope="col" class="py-3" style="width: 10%">Tổng tiền</th>
+                                                <th scope="col" class="py-3" style="width: 10%">Người lập</th>
+                                                <th scope="col" class="text-center py-3" style="width: 8%">Hành động
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="exportList">
+                                            <% if (typeof exports !=='undefined' && exports.length> 0) { %>
+                                                <% exports.forEach(function(px, index) { %>
+                                                    <tr>
+                                                        <td class="text-center fw-semibold text-muted">
+                                                            <%= index + 1 %>
+                                                        </td>
+
+                                                        <td>
+                                                            <span
+                                                                class="badge bg-danger bg-opacity-10 text-danger border border-danger-subtle px-2 py-1 fs-6">
+                                                                <i class="bi bi-box-arrow-right me-1"></i>
+                                                                <%= px.exportID %>
+                                                            </span>
+                                                        </td>
+
+                                                        <td class="fw-bold text-secondary">
+                                                            <%= px.invoiceNumber ? px.invoiceNumber : '---' %>
+                                                        </td>
+
+                                                        <td class="fw-semibold text-dark">
+                                                            <%= new Date(px.dateExport).toLocaleDateString('vi-VN') %>
+                                                        </td>
+
+                                                        <td>
+                                                            <span class="text-dark fw-semibold">
+                                                                <%= px.recipientName || '---' %>
+                                                            </span>
+                                                            <% if (px.recipientPhone) { %>
+                                                                <div class="small text-muted mt-1"><i
+                                                                        class="bi bi-telephone-fill me-1"></i>
+                                                                    <%= px.recipientPhone %>
+                                                                </div>
+                                                                <% } %>
+                                                        </td>
+
+                                                        <td>
+                                                            <span class="text-secondary">
+                                                                <%= px.reason %>
+                                                            </span>
+                                                        </td>
+
+                                                        <td class="text-danger fw-bold">
+                                                            <%= (px.totalAmount || 0).toLocaleString('vi-VN') %> đ
+                                                        </td>
+
+                                                        <td>
+                                                            <span class="badge bg-light text-dark border">
+                                                                <i class="bi bi-person me-1"></i>
+                                                                <%= px.user ? (px.user.fullName || px.user.userName)
+                                                                    : 'N/A' %>
+                                                            </span>
+                                                        </td>
+
+                                                        <td class="text-center">
+                                                            <div
+                                                                class="d-flex justify-content-center align-items-center gap-2">
+                                                                <a href="/exportstock/chitiet/<%= px._id %>"
+                                                                    class="btn btn-outline-info btn-sm px-2 py-1 bg-white"
+                                                                    title="Xem chi tiết">
+                                                                    <i class="bi bi-eye"></i>
+                                                                </a>
+
+                                                                <% if (currentUser && currentUser.role === 'admin') { %>
+                                                                    <a href="/exportstock/sua/<%= px._id %>"
+                                                                        class="btn btn-outline-warning btn-sm px-2 py-1 bg-white"
+                                                                        title="Sửa phiếu">
+                                                                        <i class="bi bi-pencil"></i>
+                                                                    </a>
+                                                                <% } %>
+
+                                                                <button type="button"
+                                                                    class="btn btn-outline-danger btn-sm px-2 py-1 shadow-sm bg-white"
+                                                                    onclick="huyPhieuXuat('<%= px._id %>')"
+                                                                    title="Hủy phiếu">
+                                                                    <i class="bi bi-x-circle fw-bold"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <% }) %>
+                                                        <% } else { %>
+                                                            <tr>
+                                                                <td colspan="9" class="text-center py-5 text-muted">
+                                                                    <i
+                                                                        class="bi bi-inbox fs-1 d-block mb-3 text-secondary"></i>
+                                                                    Chưa có phiếu xuất kho nào khớp với tìm kiếm.
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <% } else { %>
+                <div class="container mt-5 text-center">
+                    <div class="alert alert-warning" role="alert">
+                        Vui lòng <a href="/auth/login" class="alert-link">đăng nhập</a> để truy cập hệ thống.
+                    </div>
+                </div>
+                <% } %>
+
+                    <%- include('includes/footer') %>
+                        <%- include('includes/javascript') %>
+
+                            <script>
+                                async function huyPhieuXuat(id) {
+                                    // 1. Hiển thị hộp thoại bắt buộc nhập lý do (Nhấn mạnh việc cộng lại kho)
+                                    const reason = prompt("CẢNH BÁO: Hủy phiếu sẽ HOÀN TRẢ LẠI số lượng thiết bị vào kho.\nVui lòng nhập LÝ DO HỦY (bắt buộc):");
+
+                                    // Bấm Cancel thì thoát
+                                    if (reason === null) return;
+
+                                    // Kiểm tra không nhập chữ nào
+                                    if (reason.trim() === "") {
+                                        alert("❌ Bạn bắt buộc phải nhập lý do hủy để hệ thống lưu vết!");
+                                        return;
+                                    }
+
+                                    // 2. Gửi dữ liệu xuống Backend
+                                    try {
+                                        const response = await fetch(`/exportstock/huy/${id}`, {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ cancelReason: reason.trim() })
+                                        });
+
+                                        const result = await response.json();
+
+                                        if (result.success) {
+                                            alert("✅ " + result.message);
+                                            window.location.reload(); // Tải lại trang
+                                        } else {
+                                            alert("❌ Thất bại: " + result.message);
+                                        }
+                                    } catch (error) {
+                                        console.error(error);
+                                        alert("❌ Đã xảy ra lỗi mạng khi thực hiện hủy phiếu xuất!");
+                                    }
+                                }
+                            </script>
+
+</body>
+
+</html>

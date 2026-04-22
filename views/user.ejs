@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css">
+    <title>
+        <%= title %> Kho FTEL
+    </title>
+</head>
+
+<body>
+    <div class="container">
+        <%- include('includes/header') %>
+    </div>
+    <%- include('includes/navbar') %>
+        <div class="d-flex">
+            <div class="sidebar d-flex flex-column p-3">
+                <a href="/" class="d-flex align-items-center mb-4 text-decoration-none text-primary">
+                    <div>
+                        <img src="/images/fpt.png" alt="FPT" height="40" class="me-2">
+                        <p style="color :black"><b>FPT Telecom An Giang</b></p>
+                    </div>
+                </a>
+
+                <ul class="nav flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="#collapseDanhMuc" data-bs-toggle="collapse" aria-expanded="false"
+                            class="nav-link d-flex justify-content-between align-items-center">
+                            <div><i class="bi bi-list-ul text-secondary"></i> Hệ thống</div>
+                            <i class="bi bi-caret-right-fill rotate-icon"
+                                style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                        </a>
+
+                        <ul class="collapse nav flex-column ms-3" id="collapseDanhMuc">
+                            <li class="nav-item">
+                                <a href="/provider" class="nav-link">
+                                    <i class="bi bi-shop text-secondary"></i> Nhà cung cấp
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/user" class="nav-link">
+                                    <i class="bi bi-person-fill text-secondary"></i> Người dùng
+                                </a>
+                            </li>
+                            <li class="nav-item"><a href="/request" class="nav-link "><i class="bi bi-file-earmark-text text-secondary"></i> Yêu cầu nhập hàng</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item mt-1">
+                        <a href="#collapseKhoThietBi" data-bs-toggle="collapse" aria-expanded="false"
+                            class="nav-link d-flex justify-content-between align-items-center">
+                            <div><i class="bi bi-building text-secondary"></i> Kho thiết bị</div>
+                            <i class="bi bi-caret-right-fill rotate-icon"
+                                style="font-size: 0.8rem; transition: transform 0.3s;"></i>
+                        </a>
+
+                        <ul class="collapse nav flex-column ms-3" id="collapseKhoThietBi">
+                            <li class="nav-item">
+                                <a href="/unit" class="nav-link">
+                                    <i class="bi bi-tag-fill text-secondary"></i> Đơn vị tính
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="/category" class="nav-link">
+                                    <i class="bi bi-grid-fill text-secondary"></i> Danh mục thiết bị
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/product" class="nav-link">
+                                    <i class="bi bi-box-seam text-secondary"></i> Thiết bị
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/inventory" class="nav-link">
+                                    <i class="bi-boxes text-secondary"></i> Tồn kho
+                                </a>
+                            </li>
+                             <li class="nav-item">
+                                <a href="/importstock" class="nav-link">
+                                    <i class="bi bi-box-arrow-in-right text-secondary"></i> Nhập kho
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/exportstock" class="nav-link">
+                                    <i class="bi bi-box-arrow-right text-secondary"></i> Xuất kho
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+
+            <div class="main-content flex-grow-1 d-flex flex-column">
+                <div class="p-4 border-bottom bg-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="mb-0 fw-bold text-primary"><i class="bi bi-person-lines-fill me-2"></i>Danh sách
+                            Người dùng</h4>
+                        <small class="text-muted">Quản lý tài khoản và phân quyền truy cập hệ thống</small>
+                    </div>
+
+                    <% if (typeof currentUser !=='undefined' && currentUser.role==='admin' ) { %>
+                        <a href="/user/them" class="btn btn-primary shadow-sm">
+                            <i class="bi bi-person-plus-fill me-1"></i> Thêm Người dùng
+                        </a>
+                        <% } %>
+                </div>
+
+                <div class="p-4 flex-grow-1 overflow-auto bg-light">
+                    <div class="card border-0 shadow-sm rounded-3">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" class="text-center" style="width: 5%">STT</th>
+                                            <th scope="col" style="width: 15%">Tên đăng nhập</th>
+                                            <th scope="col" style="width: 20%">Họ và tên</th>
+                                            <th scope="col" style="width: 20%">Email</th>
+                                            <th scope="col" style="width: 15%">Số điện thoại</th>
+                                            <th scope="col" style="width: 10%">Vai trò</th>
+                                            <th scope="col" class="text-center" style="width: 15%">Hành động</th>
+                                    </thead>
+                                    <tbody>
+                                        <% if (typeof users !=='undefined' && users.length> 0) { %>
+                                            <% users.forEach(function(u, index) { %>
+                                                <tr>
+                                                    <td class="text-center text-muted fw-bold">
+                                                        <%= index + 1 %>
+                                                    </td>
+
+                                                    <td class="fw-semibold text-dark">
+                                                        <%= u.userName %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= u.fullName %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= u.email || 'Chưa cập nhật' %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%= u.phone || '<i class="text-muted">Chưa cập nhật</i>' %>
+                                                    </td>
+
+                                                    <td>
+                                                        <% if (u.role==='admin' ) { %>
+                                                            <span class="badge bg-danger">Quản trị viên</span>
+                                                            <% } else { %>
+                                                                <span class="badge bg-info text-dark">Nhân viên</span>
+                                                                <% } %>
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                        <% if (currentUser.role==='admin' ||
+                                                            currentUser._id.toString()===u._id.toString()) { %>
+                                                            <div class="d-flex justify-content-center gap-2">
+                                                                <a href="/user/sua/<%= u._id %>"
+                                                                    class="btn btn-outline-primary btn-sm" title="Sửa">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                </a>
+
+                                                                <% if (currentUser.role==='admin' ) { %>
+                                                                    <a href="/user/xoa/<%= u._id %>"
+                                                                        class="btn btn-outline-danger btn-sm"
+                                                                        title="Xóa"
+                                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');">
+                                                                        <i class="bi bi-trash"></i>
+                                                                    </a>
+                                                                    <% } %>
+                                                            </div>
+                                                            <% } else { %>
+                                                                <span class="text-muted"
+                                                                    title="Không có quyền thao tác">
+                                                                    <i class="bi bi-shield-lock-fill fs-5"></i>
+                                                                </span>
+                                                                <% } %>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                                    <% } else { %>
+                                                        <tr>
+                                                            <td colspan="6" class="text-center py-5 text-muted">
+                                                                <i
+                                                                    class="bi bi-people fs-1 d-block mb-3 text-secondary"></i>
+                                                                <h5>Chưa có người dùng nào</h5>
+                                                                <p>Hệ thống hiện chưa có dữ liệu tài khoản.</p>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <%- include('includes/footer') %>
+            <%- include('includes/javascript') %>
+
+</body>
+
+
+</html>
