@@ -8,7 +8,7 @@ const ImportItems = require('../models/importitems');
 const Inventory = require('../models/inventory');
 const Product = require('../models/product');
 const Provider = require('../models/provider');
-const User = require('../models/User');
+const User = require('../models/user');
 
 // 1. GET: Trang danh sách Phiếu Nhập
 router.get('/', async (req, res) => {

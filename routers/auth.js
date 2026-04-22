@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const User = require('../models/user');
 
 // 1. GET: Hiển thị form Đăng nhập
 router.get('/login', async (req, res) => {

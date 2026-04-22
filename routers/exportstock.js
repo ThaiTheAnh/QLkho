@@ -7,7 +7,7 @@ const ExportStock = require('../models/exportstock'); // Vỏ phiếu xuất
 const ExportItems = require('../models/exportitems'); // Ruột phiếu xuất
 const Inventory = require('../models/inventory');     // Tồn kho
 const Product = require('../models/product');         // Thiết bị
-const User = require('../models/User');               // Người dùng
+const User = require('../models/user');               // Người dùng
 
 //  MIDDLEWARE: CHỈ CHO PHÉP ADMIN HOẶC KẾ TOÁN TRUY CẬP
 const requireAdmin = (req, res, next) => {
