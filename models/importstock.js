@@ -6,7 +6,7 @@ const ImportStockSchema = new mongoose.Schema({
     importID: { type: String, unique: true },
     dateImport: { type: Date, default: Date.now },
     provider: { type: mongoose.Schema.Types.ObjectId, ref: 'Provider', required: true }, 
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },        
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },        
     
     // Số hóa đơn / Chứng từ
     invoiceNumber: { type: String, default: '' },
@@ -23,7 +23,7 @@ const ImportStockSchema = new mongoose.Schema({
     
     // 🌟 BỔ SUNG CHO TÍNH NĂNG "HỦY PHIẾU CÓ LƯU VẾT"
     cancelReason: { type: String, default: '' },                  
-    cancelledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, 
+    cancelledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }, 
     cancelledAt: { type: Date }                                   
      
 }, { timestamps: true });

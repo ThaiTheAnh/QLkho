@@ -7,7 +7,7 @@ const ExportStockSchema = new mongoose.Schema({
     // =====================================
     exportID: { type: String, unique: true },
     dateExport: { type: Date, default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Ai là người lập phiếu?
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'ser', required: true }, // Ai là người lập phiếu?
     
     // 🌟 BỔ SUNG: THÔNG TIN NGƯỜI NHẬN HÀNG (Khách hàng / Kỹ thuật viên)
     recipientName: { type: String, required: true, trim: true }, // Tên người nhận
@@ -28,7 +28,7 @@ const ExportStockSchema = new mongoose.Schema({
     isHidden: { type: Boolean, default: false }, //xóa trong thùng rác
 
     cancelReason: { type: String, default: '' },                  // Lý do hủy phiếu
-    cancelledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Ai là người hủy
+    cancelledBy: { type: mongoose.Schema.Types.ObjectId, ref: 'user' }, // Ai là người hủy
     cancelledAt: { type: Date }                                   // Hủy vào lúc nào
 
 }, { timestamps: true });
