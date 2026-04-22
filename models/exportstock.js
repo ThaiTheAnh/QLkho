@@ -7,7 +7,7 @@ const ExportStockSchema = new mongoose.Schema({
     // =====================================
     exportID: { type: String, unique: true },
     dateExport: { type: Date, default: Date.now },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'ser', required: true }, // Ai là người lập phiếu?
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true }, // Ai là người lập phiếu?
     
     // 🌟 BỔ SUNG: THÔNG TIN NGƯỜI NHẬN HÀNG (Khách hàng / Kỹ thuật viên)
     recipientName: { type: String, required: true, trim: true }, // Tên người nhận
